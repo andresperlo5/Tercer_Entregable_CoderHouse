@@ -1,8 +1,11 @@
 require('dotenv').config()
 
+const cors = require('cors')
 const express = require('express')
 const app = express()
+
 app.use(express.json())
+app.use(cors())
 
 const morgan = require('morgan')
 app.use(morgan('dev'))
@@ -23,12 +26,14 @@ app.get('/productos', async (req, res) => {
 
 app.get('/productosRandom', async (req, res) => {
 
-    try {
-        let productos = await c1.getById(1)
+     try {
+        const idQuery = Number(req.query.id)
+        let productos = await c1.getById(idQuery)
+        console.log(productos)
         res.send(productos)
     } catch (error) {
         throw error
-    }
+    } 
 })
 
 app.use(function (req, res, next) {
